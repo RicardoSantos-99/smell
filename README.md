@@ -4,13 +4,13 @@
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
+If [available in Hex](https://hexdocs.pm/smell/api-reference.html), the package can be installed
 by adding `smell` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:smell, "~> 0.1.0"}
+    {:smell, "~> 0.1.1"}
   ]
 end
 ```
