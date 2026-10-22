@@ -70,6 +70,7 @@
           ## Smell's own checks, run on this repository
           #
           {Smell.Check.Design.AppConfigInLibrary, []},
+          {Smell.Check.Design.UseInsteadOfImport, []},
           {Smell.Check.Readability.ComplexElseClauses, []},
           {Smell.Check.Warning.NamespaceTrespassing, []},
 

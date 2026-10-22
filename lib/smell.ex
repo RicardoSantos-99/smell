@@ -22,6 +22,7 @@ defmodule Smell do
 
   @checks [
     Smell.Check.Design.AppConfigInLibrary,
+    Smell.Check.Design.UseInsteadOfImport,
     Smell.Check.Readability.ComplexElseClauses,
     Smell.Check.Warning.NamespaceTrespassing
   ]

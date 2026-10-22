@@ -51,6 +51,7 @@ checks: %{
 | Check | Anti-pattern | Reports |
 | --- | --- | --- |
 | `Smell.Check.Design.AppConfigInLibrary` | [Using application configuration for libraries](https://hexdocs.pm/elixir/design-anti-patterns.html#using-application-configuration-for-libraries) | In a library (a `mix.exs` with `:package` and no `:releases`), a read of the library's own application environment (`Application.get_env/3`, `fetch_env!/2`, `compile_env/3`, ...), except keys that swap a component (`:adapter`, `:json_library`, ...) and the `:otp_app` pattern |
+| `Smell.Check.Design.UseInsteadOfImport` | [`use` instead of `import`](https://hexdocs.pm/elixir/macro-anti-patterns.html#use-instead-of-import) | A `__using__/1` whose clauses only inject `import`, `alias` and `require` directives (unless it is deprecated) |
 | `Smell.Check.Readability.ComplexElseClauses` | [Complex `else` clauses in `with`](https://hexdocs.pm/elixir/code-anti-patterns.html#complex-else-clauses-in-with) | A `with` with two or more `<-` clauses whose `else` block has more than `max_else_clauses` (default 1) clauses |
 | `Smell.Check.Warning.NamespaceTrespassing` | [Namespace trespassing](https://hexdocs.pm/elixir/code-anti-patterns.html#namespace-trespassing) | A top-level module defined inside a namespace owned by Elixir (`Mix`, `Logger`, ...) or by a dependency listed in `mix.lock` (`Plug`, `Phoenix`, ...) |
 
@@ -72,6 +73,10 @@ parameters of each check.
 ```elixir
 {Smell.Check.Design.AppConfigInLibrary, [allowed_keys: [:statuses]]}
 ```
+
+`UseInsteadOfImport`:
+
+- `exclude_test_files` (default `true`): skip files under `test/`.
 
 `ComplexElseClauses`:
 
