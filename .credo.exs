@@ -73,6 +73,7 @@
           {Smell.Check.Design.UseInsteadOfImport, []},
           {Smell.Check.Readability.ComplexElseClauses, []},
           {Smell.Check.Warning.NamespaceTrespassing, []},
+          {Smell.Check.Warning.NonAssertivePatternMatching, []},
 
           #
           ## Consistency Checks

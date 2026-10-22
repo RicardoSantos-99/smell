@@ -14,6 +14,7 @@
 - New check: `Smell.Check.Warning.NamespaceTrespassing`.
 - New check: `Smell.Check.Design.AppConfigInLibrary`.
 - New check: `Smell.Check.Design.UseInsteadOfImport`.
+- New check: `Smell.Check.Warning.NonAssertivePatternMatching`.
 - `ComplexElseClauses`: new `max_else_clauses` param (default `1`) and a link to the
   documentation (`mix credo explain`).
 

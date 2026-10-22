@@ -24,7 +24,8 @@ defmodule Smell do
     Smell.Check.Design.AppConfigInLibrary,
     Smell.Check.Design.UseInsteadOfImport,
     Smell.Check.Readability.ComplexElseClauses,
-    Smell.Check.Warning.NamespaceTrespassing
+    Smell.Check.Warning.NamespaceTrespassing,
+    Smell.Check.Warning.NonAssertivePatternMatching
   ]
 
   @default_config inspect(

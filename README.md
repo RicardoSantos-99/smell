@@ -54,6 +54,7 @@ checks: %{
 | `Smell.Check.Design.UseInsteadOfImport` | [`use` instead of `import`](https://hexdocs.pm/elixir/macro-anti-patterns.html#use-instead-of-import) | A `__using__/1` whose clauses only inject `import`, `alias` and `require` directives (unless it is deprecated) |
 | `Smell.Check.Readability.ComplexElseClauses` | [Complex `else` clauses in `with`](https://hexdocs.pm/elixir/code-anti-patterns.html#complex-else-clauses-in-with) | A `with` with two or more `<-` clauses whose `else` block has more than `max_else_clauses` (default 1) clauses |
 | `Smell.Check.Warning.NamespaceTrespassing` | [Namespace trespassing](https://hexdocs.pm/elixir/code-anti-patterns.html#namespace-trespassing) | A top-level module defined inside a namespace owned by Elixir (`Mix`, `Logger`, ...) or by a dependency listed in `mix.lock` (`Plug`, `Phoenix`, ...) |
+| `Smell.Check.Warning.NonAssertivePatternMatching` | [Non-assertive pattern matching](https://hexdocs.pm/elixir/code-anti-patterns.html#non-assertive-pattern-matching) | A `case` that matches `{:ok, value}` and then everything else with `_`, with no clause for `:error` or `{:error, ...}` |
 
 Run `mix credo explain` on an issue to see the full explanation and the
 parameters of each check.
@@ -94,6 +95,10 @@ parameters of each check.
 ```elixir
 {Smell.Check.Warning.NamespaceTrespassing, [allowed_namespaces: [Phoenix.LiveView]]}
 ```
+
+`NonAssertivePatternMatching`:
+
+- `exclude_test_files` (default `true`): skip files under `test/`.
 
 ### Anti-patterns Credo already covers
 
