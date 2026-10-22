@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Elixir ${{ matrix.elixir }} / OTP ${{ matrix.otp }} / Credo ${{ matrix.credo }}
+    # Pinned because the OTP builds that setup-beam downloads depend on the OS
+    # version: ubuntu-26.04 has no build for OTP 25.
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Oldest supported Elixir with the oldest supported Credo (the one in
+          # mix.lock). Credo 1.7.0 reports a false positive in ModuleDoc for
+          # modules that `use Credo.Check` (fixed in 1.7.17), so lint is skipped.
+          - elixir: "1.14"
+            otp: "25"
+            credo: "1.7.0"
+          - elixir: "1.14"
+            otp: "25"
+            credo: latest
+            lint: true
+          # Newest Elixir and OTP. There is no row with Credo 1.7.0 here: it does
+          # not compile on OTP 28+, and its own checks crash on Elixir 1.18+.
+          - elixir: "1.20"
+            otp: "29"
+            credo: latest
+            lint: true
+            format: true
+    env:
+      MIX_ENV: test
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: erlef/setup-beam@v1
+        with:
+          elixir-version: ${{ matrix.elixir }}
+          otp-version: ${{ matrix.otp }}
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            deps
+            _build
+          key: mix-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-credo-${{ matrix.credo }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            mix-${{ runner.os }}-${{ matrix.elixir }}-${{ matrix.otp }}-credo-${{ matrix.credo }}-
+
+      - run: mix deps.get
+
+      - name: Update Credo to the latest release
+        if: matrix.credo == 'latest'
+        run: mix deps.update credo
+
+      - name: Show Credo version
+        run: mix deps | grep -A1 '^\* credo '
+
+      - run: mix test
+
+      # The formatter output can change between Elixir versions, so only the
+      # newest one checks it.
+      - run: mix format --check-formatted
+        if: matrix.format
+
+      - run: mix credo --strict --all
+        if: matrix.lint
