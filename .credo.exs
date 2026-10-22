@@ -41,7 +41,7 @@
       # If you create your own checks, you must specify the source files for
       # them here, so they can be loaded by Credo before running the analysis.
       #
-      requires: ["lib/credo/checks/readability/complex_else_clauses.ex"],
+      requires: ["lib/smell/check/"],
       #
       # If you want to enforce a style guide and need a more traditional linting
       # experience, you can change `strict` to `true` below:
@@ -66,6 +66,12 @@
       #
       checks: %{
         enabled: [
+          #
+          ## Smell's own checks, run on this repository
+          #
+          {Smell.Check.Readability.ComplexElseClauses, []},
+          {Smell.Check.Warning.NamespaceTrespassing, []},
+
           #
           ## Consistency Checks
           #
@@ -94,7 +100,6 @@
           #
           ## Readability Checks
           #
-          {Credo.Checks.Readability.ComplexElseClauses, []},
           {Credo.Check.Readability.AliasOrder, []},
           {Credo.Check.Readability.FunctionNames, []},
           {Credo.Check.Readability.LargeNumbers, []},
