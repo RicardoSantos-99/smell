@@ -12,6 +12,7 @@
 - `Smell` is now a working Credo plugin: `plugins: [{Smell, []}]` enables every check.
 - `Smell.checks/0` lists every check, for configs with an explicit `enabled` list.
 - New check: `Smell.Check.Warning.NamespaceTrespassing`.
+- New check: `Smell.Check.Design.AppConfigInLibrary`.
 - `ComplexElseClauses`: new `max_else_clauses` param (default `1`) and a link to the
   documentation (`mix credo explain`).
 

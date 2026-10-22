@@ -21,6 +21,7 @@ defmodule Smell do
   import Credo.Plugin
 
   @checks [
+    Smell.Check.Design.AppConfigInLibrary,
     Smell.Check.Readability.ComplexElseClauses,
     Smell.Check.Warning.NamespaceTrespassing
   ]

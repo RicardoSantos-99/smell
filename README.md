@@ -50,6 +50,7 @@ checks: %{
 
 | Check | Anti-pattern | Reports |
 | --- | --- | --- |
+| `Smell.Check.Design.AppConfigInLibrary` | [Using application configuration for libraries](https://hexdocs.pm/elixir/design-anti-patterns.html#using-application-configuration-for-libraries) | In a library (a `mix.exs` with `:package` and no `:releases`), a read of the library's own application environment (`Application.get_env/3`, `fetch_env!/2`, `compile_env/3`, ...), except keys that swap a component (`:adapter`, `:json_library`, ...) and the `:otp_app` pattern |
 | `Smell.Check.Readability.ComplexElseClauses` | [Complex `else` clauses in `with`](https://hexdocs.pm/elixir/code-anti-patterns.html#complex-else-clauses-in-with) | A `with` with two or more `<-` clauses whose `else` block has more than `max_else_clauses` (default 1) clauses |
 | `Smell.Check.Warning.NamespaceTrespassing` | [Namespace trespassing](https://hexdocs.pm/elixir/code-anti-patterns.html#namespace-trespassing) | A top-level module defined inside a namespace owned by Elixir (`Mix`, `Logger`, ...) or by a dependency listed in `mix.lock` (`Plug`, `Phoenix`, ...) |
 
@@ -57,6 +58,20 @@ Run `mix credo explain` on an issue to see the full explanation and the
 parameters of each check.
 
 ### Parameters
+
+`AppConfigInLibrary`:
+
+- `library` (default `:auto`): `:auto` checks the project when its `mix.exs` has
+  a `:package` and no `:releases`; `true` always checks it, `false` never does.
+- `allowed_keys` (default `[]`): keys the library may read, as atoms or regexes,
+  for example settings used to generate code from data files:
+  `[:statuses, ~r/^debug_/]`. For a key path such as `[MyLib.Repo, :timeout]`,
+  the last key is matched.
+- `exclude_test_files` (default `true`): skip files under `test/`.
+
+```elixir
+{Smell.Check.Design.AppConfigInLibrary, [allowed_keys: [:statuses]]}
+```
 
 `ComplexElseClauses`:
 

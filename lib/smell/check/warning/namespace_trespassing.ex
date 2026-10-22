@@ -50,6 +50,8 @@ defmodule Smell.Check.Warning.NamespaceTrespassing do
       ]
     ]
 
+  alias Smell.Check.Helpers
+
   @elixir_apps [:elixir, :eex, :ex_unit, :iex, :logger, :mix]
 
   # Root namespaces of every module shipped with Elixir, e.g. "Mix", "Logger", "String".
@@ -66,21 +68,11 @@ defmodule Smell.Check.Warning.NamespaceTrespassing do
   @doc false
   @impl true
   def run(%SourceFile{} = source_file, params) do
-    if Params.get(params, :exclude_test_files, __MODULE__) and test_file?(source_file.filename) do
+    if Params.get(params, :exclude_test_files, __MODULE__) and
+         Helpers.test_file?(source_file.filename) do
       []
     else
       check_modules(source_file, params)
-    end
-  end
-
-  # `test/x_test.exs` and `apps/app/test/support/x.ex` are test files, while
-  # `lib/app/test/helpers.ex` ships with the package.
-  defp test_file?(filename) do
-    segments = Path.split(filename)
-
-    case Enum.find_index(segments, &(&1 == "test")) do
-      nil -> false
-      index -> "lib" not in Enum.take(segments, index)
     end
   end
 
@@ -140,24 +132,8 @@ defmodule Smell.Check.Warning.NamespaceTrespassing do
   defp namespace_name(namespace) when is_binary(namespace),
     do: String.trim_leading(namespace, "Elixir.")
 
-  # mix.lock is read once per change instead of once per source file.
-  defp dependency_namespaces(lockfile) do
-    path = Path.expand(lockfile)
-
-    case File.stat(path) do
-      {:ok, %File.Stat{mtime: mtime, size: size}} ->
-        key = {__MODULE__, path, mtime, size}
-
-        with nil <- :persistent_term.get(key, nil) do
-          namespaces = read_lockfile(path)
-          :persistent_term.put(key, namespaces)
-          namespaces
-        end
-
-      {:error, _reason} ->
-        %{}
-    end
-  end
+  defp dependency_namespaces(lockfile),
+    do: Helpers.cached_read(__MODULE__, lockfile, %{}, &read_lockfile/1)
 
   defp read_lockfile(path) do
     with {:ok, contents} <- File.read(path),
