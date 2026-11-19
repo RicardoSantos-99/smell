@@ -15,7 +15,7 @@ Add `smell` to your dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:smell, "~> 0.2", only: [:dev, :test], runtime: false}
+    {:smell, "~> 0.3", only: [:dev, :test], runtime: false}
   ]
 end
 ```
