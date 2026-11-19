@@ -34,6 +34,7 @@ defmodule Smell do
   ]
 
   @opt_in_checks [
+    Smell.Check.Design.BooleanObsession,
     Smell.Check.Design.UnsupervisedProcess
   ]
 

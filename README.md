@@ -66,11 +66,17 @@ plugin does not enable them. Add the ones you want to the `checks` of your
 `.credo.exs` (they are listed in `Smell.opt_in_checks/0`):
 
 ```elixir
-checks: %{extra: [{Smell.Check.Design.UnsupervisedProcess, []}]}
+checks: %{
+  extra: [
+    {Smell.Check.Design.BooleanObsession, []},
+    {Smell.Check.Design.UnsupervisedProcess, []}
+  ]
+}
 ```
 
 | Check | Anti-pattern | Reports |
 | --- | --- | --- |
+| `Smell.Check.Design.BooleanObsession` | [Boolean obsession](https://hexdocs.pm/elixir/design-anti-patterns.html#boolean-obsession) | A `cond` over two or more boolean options of a function (`opts[:admin]`, `Keyword.get(opts, :editor, false)`, ...), or a `case` that matches a tuple of them against `true` and `false`: options with overlapping states, which one option with atom values (`role: :admin`) replaces |
 | `Smell.Check.Design.UnsupervisedProcess` | [Unsupervised processes](https://hexdocs.pm/elixir/process-anti-patterns.html#unsupervised-processes) | A process started (`GenServer.start_link/3`, `Agent.start_link/2`, `DynamicSupervisor.start_link/1`, `SomeModule.start_link`, ...) inside a `handle_call`, `handle_cast`, `handle_info`, `handle_event` or `handle_in` callback, which starts one process per message outside a supervision tree. `Task` and `spawn` are not reported |
 
 ### Parameters
@@ -111,6 +117,10 @@ checks: %{extra: [{Smell.Check.Design.UnsupervisedProcess, []}]}
 ```
 
 `NonAssertivePatternMatching`:
+
+- `exclude_test_files` (default `true`): skip files under `test/`.
+
+`BooleanObsession`:
 
 - `exclude_test_files` (default `true`): skip files under `test/`.
 
