@@ -74,6 +74,7 @@
           {Smell.Check.Design.UnsupervisedProcess, []},
           {Smell.Check.Design.UseInsteadOfImport, []},
           {Smell.Check.Readability.ComplexElseClauses, []},
+          {Smell.Check.Refactor.SendingUnnecessaryData, []},
           {Smell.Check.Warning.NamespaceTrespassing, []},
           {Smell.Check.Warning.NonAssertivePatternMatching, []},
 

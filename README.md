@@ -69,7 +69,8 @@ plugin does not enable them. Add the ones you want to the `checks` of your
 checks: %{
   extra: [
     {Smell.Check.Design.BooleanObsession, []},
-    {Smell.Check.Design.UnsupervisedProcess, []}
+    {Smell.Check.Design.UnsupervisedProcess, []},
+    {Smell.Check.Refactor.SendingUnnecessaryData, []}
   ]
 }
 ```
@@ -78,6 +79,7 @@ checks: %{
 | --- | --- | --- |
 | `Smell.Check.Design.BooleanObsession` | [Boolean obsession](https://hexdocs.pm/elixir/design-anti-patterns.html#boolean-obsession) | A `cond` over two or more boolean options of a function (`opts[:admin]`, `Keyword.get(opts, :editor, false)`, ...), or a `case` that matches a tuple of them against `true` and `false`: options with overlapping states, which one option with atom values (`role: :admin`) replaces |
 | `Smell.Check.Design.UnsupervisedProcess` | [Unsupervised processes](https://hexdocs.pm/elixir/process-anti-patterns.html#unsupervised-processes) | A process started (`GenServer.start_link/3`, `Agent.start_link/2`, `DynamicSupervisor.start_link/1`, `SomeModule.start_link`, ...) inside a `handle_call`, `handle_cast`, `handle_info`, `handle_event` or `handle_in` callback, which starts one process per message outside a supervision tree. `Task` and `spawn` are not reported |
+| `Smell.Check.Refactor.SendingUnnecessaryData` | [Sending unnecessary data](https://hexdocs.pm/elixir/process-anti-patterns.html#sending-unnecessary-data) | A variable that an anonymous function only reads fields of (`conn.remote_ip`), when the function runs in another process (`spawn/1`, `Task.async/1`, `Task.async_stream/3`, `Agent.update/3`, LiveView's `start_async/3`, ...): the whole variable is copied to that process |
 
 ### Parameters
 
@@ -125,6 +127,10 @@ checks: %{
 - `exclude_test_files` (default `true`): skip files under `test/`.
 
 `UnsupervisedProcess`:
+
+- `exclude_test_files` (default `true`): skip files under `test/`.
+
+`SendingUnnecessaryData`:
 
 - `exclude_test_files` (default `true`): skip files under `test/`.
 

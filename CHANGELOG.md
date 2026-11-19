@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- New opt-in check: `Smell.Check.Refactor.SendingUnnecessaryData`.
+
 ## 0.3.0 (2026-11-19)
 
 ### Added

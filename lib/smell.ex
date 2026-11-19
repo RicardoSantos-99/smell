@@ -35,7 +35,8 @@ defmodule Smell do
 
   @opt_in_checks [
     Smell.Check.Design.BooleanObsession,
-    Smell.Check.Design.UnsupervisedProcess
+    Smell.Check.Design.UnsupervisedProcess,
+    Smell.Check.Refactor.SendingUnnecessaryData
   ]
 
   @default_config inspect(
