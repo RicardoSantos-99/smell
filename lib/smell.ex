@@ -16,6 +16,11 @@ defmodule Smell do
           # ...your existing checks...
         ] ++ Enum.map(Smell.checks(), &{&1, []})
       }
+
+  The checks in `opt_in_checks/0` are not enabled by the plugin. Add the ones
+  you want to the `checks` of your `.credo.exs`:
+
+      checks: %{extra: [{Smell.Check.Design.UnsupervisedProcess, []}]}
   """
 
   import Credo.Plugin
@@ -26,6 +31,10 @@ defmodule Smell do
     Smell.Check.Readability.ComplexElseClauses,
     Smell.Check.Warning.NamespaceTrespassing,
     Smell.Check.Warning.NonAssertivePatternMatching
+  ]
+
+  @opt_in_checks [
+    Smell.Check.Design.UnsupervisedProcess
   ]
 
   @default_config inspect(
@@ -45,6 +54,9 @@ defmodule Smell do
   @doc false
   def default_config, do: @default_config
 
-  @doc "Returns every check provided by Smell."
+  @doc "Returns the checks that the plugin enables."
   def checks, do: @checks
+
+  @doc "Returns the checks that the plugin does not enable, which you add yourself."
+  def opt_in_checks, do: @opt_in_checks
 end

@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Opt-in checks, which the plugin does not enable: add them to your `.credo.exs`.
+  `Smell.opt_in_checks/0` lists them.
+- New opt-in check: `Smell.Check.Design.UnsupervisedProcess`.
+
 ## 0.2.0 (2026-10-22)
 
 ### Breaking changes
